@@ -5,3 +5,13 @@ dark  = "ayu-dark"
 light = "ayu-dark"
 
 # : }}}
+
+# : Manager {{{
+
+[mgr]
+
+# Border
+border_symbol = " "
+border_style  = { fg = "black" }
+
+# : }}}
