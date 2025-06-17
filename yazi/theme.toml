@@ -1,0 +1,7 @@
+# : Flavor {{{
+
+[flavor]
+dark  = "ayu-dark"
+light = "ayu-dark"
+
+# : }}}
