@@ -6,7 +6,7 @@ local config = wezterm.config_builder()
 
 config.font_size = 16
 
-config.enable_tab_bar = true
+config.enable_tab_bar = false
 
 config.window_decorations = "RESIZE"
 
