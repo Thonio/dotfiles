@@ -244,4 +244,16 @@ return {
       table.insert(opts.sources, nls.builtin.formating.black)
     end,
   },
+
+  -- Display hidden files
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    opts = {
+      filesystem = {
+        filtered_items = {
+          hide_dotfiles = false,
+        },
+      },
+    },
+  },
 }
