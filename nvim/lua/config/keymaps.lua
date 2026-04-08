@@ -22,7 +22,7 @@ keymap.set("i", "<C-;>", "<C-o>o") -- Behind
 
 -- Move line up or down
 keymap.set("n", "<C-k>", ":move +1 \n")
-keymap.set("n", "<C-i>", ":move -2 \n")
+keymap.set("n", "<M-k>", ":move -2 \n")
 
 -- Lspsaga custom keymap
 local opts = { noremap = true, silent = true }
@@ -35,11 +35,5 @@ keymap.set("n", "gp", "<Cmd>Lspsaga peek_definition<CR>", opts)
 keymap.set("n", "gr", "<Cmd>Lspsaga rename<CR>", opts)
 
 -- Lspsaga code action
-local codeaction = require("lspsaga.codeaction")
-vim.keymap.set("n", "<leader>ca", function()
-  codeaction:code_action()
-end, { silent = true })
-vim.keymap.set("v", "<leader>ca", function()
-  vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<C-U>", true, false, true))
-  codeaction:range_code_action()
-end, { silent = true })
+vim.keymap.set("n", "<leader>ca", "<Cmd>Lspsaga code_action<CR>", { silent = true })
+vim.keymap.set("v", "<leader>ca", "<Cmd>Lspsaga code_action<CR>", { silent = true })

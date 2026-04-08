@@ -53,20 +53,6 @@ return {
   },
 
   -- add pyright to lspconfig
-  {
-    "neovim/nvim-lspconfig",
-    ---@class PluginLspOpts
-    opts = {
-      ---@type lspconfig.options
-      servers = {
-        -- pyright will be automatically installed with mason and loaded with lspconfig
-        pyright = {},
-        -- copilot.lua only works with its own copilot lsp server
-        copilot = { enabled = false },
-      },
-    },
-  },
-
   -- add tsserver and setup with typescript.nvim instead of lspconfig
   {
     "neovim/nvim-lspconfig",
@@ -81,25 +67,19 @@ return {
       end,
     },
     ---@class PluginLspOpts
-    opts = {
-      ---@type lspconfig.options
-      servers = {
-        -- tsserver will be automatically installed with mason and loaded with lspconfig
-        tsserver = {},
-      },
-      -- you can do any additional lsp server setup here
-      -- return true if you don't want this server to be setup with lspconfig
-      ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
-      setup = {
-        -- example to setup with typescript.nvim
-        tsserver = function(_, opts)
-          require("typescript").setup({ server = opts })
-          return true
-        end,
-        -- Specify * to use this function as a fallback for any server
-        -- ["*"] = function(server, opts) end,
-      },
-    },
+    opts = function(_, opts)
+      opts.servers = opts.servers or {}
+      opts.servers.tsserver = nil
+      opts.servers.vtsls = opts.servers.vtsls or {}
+
+      LazyVim.extend(opts.servers.vtsls, "settings.vtsls.tsserver.globalPlugins", {
+        {
+          name = "@angular/language-server",
+          location = LazyVim.get_pkg_path("angular-language-server", "/node_modules/@angular/language-server"),
+          enableForWorkspaceTypeScriptVersions = false,
+        },
+      })
+    end,
   },
 
   -- for typescript, LazyVim also includes extra specs to properly setup lspconfig,
@@ -107,28 +87,6 @@ return {
   { import = "lazyvim.plugins.extras.lang.typescript" },
 
   -- add more treesitter parsers
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = {
-        "bash",
-        "html",
-        "javascript",
-        "json",
-        "lua",
-        "markdown",
-        "markdown_inline",
-        "python",
-        "query",
-        "regex",
-        "tsx",
-        "typescript",
-        "vim",
-        "yaml",
-      },
-    },
-  },
-
   -- since `vim.tbl_deep_extend`, can only merge tables and not lists, the code above
   -- would overwrite `ensure_installed` with the new value.
   -- If you'd rather extend the default config, use the code below instead:
@@ -136,9 +94,31 @@ return {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
       -- add tsx and treesitter
-      vim.list_extend(opts.ensure_installed, {
-        "tsx",
-        "typescript",
+      if type(opts.ensure_installed) == "table" then
+        vim.list_extend(opts.ensure_installed, {
+          "tsx",
+          "typescript",
+          "angular",
+          "scss",
+          "bash",
+          "html",
+          "javascript",
+          "json",
+          "lua",
+          "markdown",
+          "markdown_inline",
+          "python",
+          "query",
+          "regex",
+          "vim",
+          "yaml",
+        })
+      end
+      vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+        pattern = { "*.component.html", "*.html" },
+        callback = function()
+          vim.treesitter.start(nil, "angular")
+        end,
       })
     end,
   },
