@@ -17,6 +17,7 @@ return {
         graphql = { "prettier" },
         lua = { "stylua" },
         python = { "isort", "black" },
+        htmlangular = { "prettier" },
       },
       format_on_save = {
         lsp_fallback = true,
