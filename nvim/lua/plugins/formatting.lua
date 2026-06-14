@@ -16,7 +16,7 @@ return {
         markdown = { "prettier" },
         graphql = { "prettier" },
         lua = { "stylua" },
-        python = { "isort", "black" },
+        python = { "ruff_format", "ruff_organize_imports" },
         htmlangular = { "prettier" },
       },
     },
@@ -40,8 +40,7 @@ return {
     opts = {
       ensure_installed = {
         "prettier",
-        "black",
-        "isort",
+        "ruff",
       },
     },
   },
