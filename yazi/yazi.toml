@@ -50,6 +50,11 @@ extract = [
 	{ run = 'ya pub extract --list "$@"', desc = "Extract here", for = "unix" },
 	{ run = 'ya pub extract --list %*',   desc = "Extract here", for = "windows" },
 ]
+pdf = [
+	{ run = 'sioyek "$@"', orphan = true, desc = "sioyek", for = "unix" },
+	{ run = 'open "$@"', desc = "Open", for = "macos" },
+	{ run = 'start "" "%1"', orphan = true, desc = "Open", for = "windows" },
+]
 play = [
 	{ run = 'mpv --force-window "$@"', orphan = true, for = "unix" },
 	{ run = 'mpv --force-window %*', orphan = true, for = "windows" },
@@ -71,6 +76,8 @@ rules = [
 	# JSON
 	{ mime = "application/{json,ndjson}", use = [ "edit", "reveal" ] },
 	{ mime = "*/javascript", use = [ "edit", "reveal" ] },
+	# PDF
+	{ mime = "application/pdf", use = [ "pdf", "open", "reveal" ] },
 	# Empty file
 	{ mime = "inode/empty", use = [ "edit", "reveal" ] },
 	# Fallback
@@ -87,8 +94,12 @@ suppress_preload = false
 
 [plugin]
 fetchers = [
-	# Mimetype
-	{ id = "mime", url = "*", run = "mime", prio = "high", group = "mime" },
+	# Folder
+	{ id = "mime", url = "*/",         run = "mime.dir",    prio = "high", group = "mime" },
+	# Local file
+	{ id = "mime", url = "local://*",  run = "mime.local",  prio = "high", group = "mime" },
+	# Remote file
+	{ id = "mime", url = "remote://*", run = "mime.remote", prio = "high", group = "mime" },
 ]
 spotters = [
 	{ url = "*/", run = "folder" },
