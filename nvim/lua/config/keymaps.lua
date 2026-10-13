@@ -28,6 +28,9 @@ keymap.set("n", "<M-k>", ":move -2 \n")
 local opts = { noremap = true, silent = true }
 keymap.set("n", "<C-j>", "<Cmd>Lspsaga diagnostic_jump_next<CR>", opts)
 keymap.set("n", "gl", "<Cmd>Lspsaga show_diagnostic<CR>", opts)
+
+-- Use built-in float for multi-LSP servers (e.g. pyright + ruff in Python)
+keymap.set("n", "gs", vim.diagnostic.open_float, { desc = "Show diagnostic float" })
 keymap.set("n", "K", "<Cmd>Lspsaga hover_doc<CR>", opts)
 keymap.set("n", "gd", "<Cmd>Lspsaga finder<CR>", opts)
 keymap.set("i", "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts)
